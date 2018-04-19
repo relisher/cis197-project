@@ -2,6 +2,7 @@ const router = require('express').Router();
 const isAuthenticated = require('../middlewares/isAuthenticated');
 const Tweet = require('../models/tweet');
 const User = require('../models/user');
+const Chat = require('../models/chat');
 
 module.exports = function (app) {
   // TODO: check to see if user is authenticated
@@ -87,6 +88,30 @@ module.exports = function (app) {
         res.json({ res: 'failure', data: err });
       });
     // ENDSTUB
+  });
+
+  router.post('/profile/:id/message', function (req, res) {
+    Chat.message(req.user.id, req.params.id, req.body.message)
+      .then((okay) => {
+        console.log(okay);
+        res.json({ res: 'success', data: okay });
+      })
+      .catch((err) => {
+        res.json({ res: 'failure', data: err });
+      });
+  // ENDSTUB
+  });
+
+  router.post('/profile/:id/messages', function (req, res) {
+    Chat.message(req.user.id, req.params.id)
+      .then((okay) => {
+        console.log(okay);
+        res.json({ res: 'success', data: okay });
+      })
+      .catch((err) => {
+        res.json({ res: 'failure', data: err });
+      });
+  // ENDSTUB
   });
 
   return router;

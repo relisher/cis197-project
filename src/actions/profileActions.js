@@ -78,7 +78,38 @@ export function getUser(id) {
 }
 
 export function chat(id) {
-  
+  return dispatch => authenticatedRequest('POST', '/api/profile/' + id + '/message', data)
+    .then(res => res.json())
+    .then((res) => {
+      dispatch({
+        type: MESSAGE_FUL,
+        message: 'You messaged this person successfully',
+      });
+    })
+    .catch((error) => {
+      dispatch({
+        type: MESSAGE_REJ,
+        error,
+      });
+    });
+}
+
+export function getChats(id) {
+  return dispatch => authenticatedRequest('POST', '/api/profile/' + id + '/messages')
+    .then(res => res.json())
+    .then((res) => {
+      dispatch({
+        type: GETMESSAGE_FUL,
+        messages: res.data,
+        message: 'You messaged this person successfully',
+      });
+    })
+    .catch((error) => {
+      dispatch({
+        type: GETMESSAGE_REJ,
+        error,
+      });
+    });
 }
 
 export function favUnfav(id) {
