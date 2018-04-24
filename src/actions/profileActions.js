@@ -9,6 +9,12 @@ export const GETPROFILE_REJ = 'GETPROFILE_REJ';
 export const FAVUNFAV_FUL = 'FAVUNFAV_FUL';
 export const FAVUNFAV_REJ = 'FAVUNFAV_REJ';
 
+export const MESSAGE_FUL = 'MESSAGE_FUL';
+export const MESSAGE_REJ = 'MESSAGE_REJ';
+
+export const GETMESSAGE_FUL = 'GETMESSAGE_FUL';
+export const GETMESSAGE_REJ = 'GETMESSAGE_REJ';
+
 export function updateProfile(data) {
   // TODO: will send a POST  request  to /api/profile/edit with the data passed into it
   // this request will need to be an authenticated request (ref the import at the
@@ -80,7 +86,6 @@ export function getUser(id) {
 export function chat(id, data) {
   var send = {};
   send.message = data;
-  console.log(send);
   return dispatch => authenticatedRequest('POST', '/api/profile/' + id + '/message', send)
     .then(res => res.json())
     .then((res) => {
@@ -101,13 +106,16 @@ export function getChats(id) {
   return dispatch => authenticatedRequest('POST', '/api/profile/' + id + '/messages')
     .then(res => res.json())
     .then((res) => {
+      var messageHistory = res.data.messages;
       dispatch({
         type: GETMESSAGE_FUL,
-        messages: res.data,
-        message: 'You messaged this person successfully',
+        profile: {
+          messageHistory
+        }
       });
     })
     .catch((error) => {
+      console.log(error);
       dispatch({
         type: GETMESSAGE_REJ,
         error,

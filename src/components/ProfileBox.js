@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import TweetList from './TweetList';
 import { loadTweetsForProfile } from '../actions/tweetActions';
 import { connect } from 'react-redux';
-import { Widget, addResponseMessage} from 'react-chat-widget';
+import { Widget, addResponseMessage, addUserMessage} from 'react-chat-widget';
 import 'react-chat-widget/lib/styles.css';
 
 class ProfileBox extends Component {
@@ -16,10 +16,10 @@ class ProfileBox extends Component {
 
   componentDidMount() {
     this.props.user();
+    this.props.getChats(this.props.id);
   }
 
   render() {
-    console.log(this.props.chat);
     let chatButton = this.props.id ?
      (<div>
      <Widget

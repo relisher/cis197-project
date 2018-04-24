@@ -3,6 +3,7 @@ import {
   UPDATEPROFILE_FUL,
   GETPROFILE_FUL,
   FAVUNFAV_FUL,
+  GETMESSAGE_FUL,
 } from '../actions/profileActions';
 
 let initialState = {
@@ -34,6 +35,9 @@ const profileReducer = (state = initialState, action) => {
       ...state,
       profile: Object.assign({}, state.profile, action.profile),
     };
+  case GETMESSAGE_FUL:
+      console.log(action)
+      return state;
   default:
     return state;
   }
