@@ -1,4 +1,5 @@
 import authenticatedRequest from '../utils/authenticatedRequest';
+import {addUserMessage} from 'react-chat-widget';
 
 export const UPDATEPROFILE_FUL = 'UPDATEPROFILE_FUL';
 export const UPDATEPROFILE_REJ = 'UPDATEPROFILE_REJ';

@@ -91,7 +91,7 @@ module.exports = function (app) {
   });
 
   router.post('/profile/:id/message', function (req, res) {
-    Chat.message(req.user.id, req.params.id, req.body.message)
+    Chat.message(req.params.id, req.user.id, req.body.message)
       .then((okay) => {
         console.log(okay);
         res.json({ res: 'success', data: okay });

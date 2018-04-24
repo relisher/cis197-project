@@ -28,7 +28,7 @@ const profileReducer = (state = initialState, action) => {
   case GETPROFILE_FUL:
     return {
       ...state,
-      profile: action.profile,
+      profile: Object.assign({}, state.profile, action.profile),
     };
   case FAVUNFAV_FUL:
     return {
@@ -36,8 +36,10 @@ const profileReducer = (state = initialState, action) => {
       profile: Object.assign({}, state.profile, action.profile),
     };
   case GETMESSAGE_FUL:
-      console.log(action)
-      return state;
+      return {
+        ...state,
+        profile: Object.assign({}, state.profile, action.profile),
+      }
   default:
     return state;
   }
