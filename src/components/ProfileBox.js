@@ -4,7 +4,11 @@ import { loadTweetsForProfile } from '../actions/tweetActions';
 import { connect } from 'react-redux';
 import { Widget, addResponseMessage, addUserMessage} from 'react-chat-widget';
 import 'react-chat-widget/lib/styles.css';
+import io from 'socket.io-client';
 let messagesLoaded = false;
+var socket = io('http://localhost:3000');
+let chatConnected = '';
+let chatMessage = null;
 
 class ProfileBox extends Component {
 
@@ -17,15 +21,23 @@ class ProfileBox extends Component {
     this.props.user();
   }
 
+  handleNewUserMessage(newMessage) {
+    socket.emit('message', {message: newMessage, chatId: chatConnected});
+    chatMessage(newMessage);
+    // Now send the message through the backend API
+  }
+
+
   render() {
     let chatButton = this.props.id ?
      (<div>
      <Widget
-       handleNewUserMessage={this.props.chat}
+       handleNewUserMessage={this.handleNewUserMessage}
        title={this.props.profile.name}
        subtitle=""
     />
     </div>) : '';
+    chatMessage = this.props.chat;
     let button = this.props.id ?
       (
         <button className="btn btn-primary" onClick={this.props.favUnfav}>
@@ -38,7 +50,6 @@ class ProfileBox extends Component {
       for(var msg in this.props.messageList) {
         messagesLoaded = true;
         if(this.props.messageList[msg].author == this.props.id) {
-          console.log("reached");
           addUserMessage(this.props.messageList[msg].message);
         } else {
           if(this.props.messageList[msg].message) {
@@ -46,6 +57,13 @@ class ProfileBox extends Component {
           }
         }
       }
+    }
+    if(this.props.chatId != '' && chatConnected == '') {
+      chatConnected = this.props.chatId;
+      socket.emit('chat-room', {chatId: this.props.chatId});
+      socket.on('readMessage', function (data) {
+        addResponseMessage(data.message);
+      });
     }
     return (
       <div className="card">
@@ -75,6 +93,7 @@ class ProfileBox extends Component {
 const mapStateToProps = state => ({
   profile: state.profileReducer.profile,
   messageList: state.profileReducer.profile.messageHistory,
+  chatId: state.profileReducer.profile.chatId
 });
 
 export default connect(mapStateToProps, null)(ProfileBox);

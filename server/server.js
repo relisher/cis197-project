@@ -1,8 +1,12 @@
 const express = require('express');
+// instantiate express app
+const app = express();
+const http = require('http').Server(app);
 const path = require('path');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
+const io = require('socket.io')(http);
 
 const config = require('./config');
 
@@ -16,9 +20,6 @@ mongoose.connect(process.env.MONGODB_URI || config.database);
 // TODO: Read that article. Our tests assume you're returning promises in your database
 // queries!
 mongoose.Promise = global.Promise;
-
-// instantiate express app
-const app = express();
 
 // set the superSecret key in our app which we will use  to sign our jwts
 app.set('superSecret', config.secret);
@@ -75,8 +76,17 @@ app.get('*', (req, res) => {
 });
 
 // set up app to listen on port 3000  or any env port specified
-app.listen(process.env.PORT || 3000, () => {
+http.listen(process.env.PORT || 3000, () => {
   console.log('listening on ' + (process.env.PORT || 3000));
+});
+
+io.on('connection', function(socket) {
+  socket.on('chat-room', function(data) {
+    socket.join(data.chatId);
+  });
+  socket.on('message', function(data) {
+    socket.to(data.chatId).emit('readMessage', {message: data.message});
+  })
 });
 
 // export app for testing purposes

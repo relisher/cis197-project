@@ -50,7 +50,6 @@ module.exports = function (app) {
       let result = [];
       users.map((user) => {
         if ((user._id.toString() !== req.user._id.toString()) && (user.followers.indexOf(req.user._id.toString()) === -1)) {
-          console.log(user._id.toString(), req.user._id);
           result.push({ name: user.username, id: user._id });
         }
       });

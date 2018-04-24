@@ -14,7 +14,8 @@ let initialState = {
     followers: [],
     following: [],
     isFollowing: false,
-    messageHistory: []
+    messageHistory: [],
+    chatId: ''
   },
 };
 

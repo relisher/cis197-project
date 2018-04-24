@@ -81,7 +81,6 @@ module.exports = function (app) {
     // STUB
     User.follow(req.user.id, req.params.id)
       .then((okay) => {
-        console.log(okay);
         res.json({ res: 'success', data: okay });
       })
       .catch((err) => {
@@ -93,7 +92,6 @@ module.exports = function (app) {
   router.post('/profile/:id/message', function (req, res) {
     Chat.message(req.params.id, req.user.id, req.body.message)
       .then((okay) => {
-        console.log(okay);
         res.json({ res: 'success', data: okay });
       })
       .catch((err) => {
@@ -105,7 +103,6 @@ module.exports = function (app) {
   router.post('/profile/:id/messages', function (req, res) {
     Chat.getMessages(req.user.id, req.params.id)
       .then((okay) => {
-        console.log(okay);
         res.json({ res: 'success', data: okay });
       })
       .catch((err) => {

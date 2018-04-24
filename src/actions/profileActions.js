@@ -92,7 +92,6 @@ export function chat(id, data) {
     .then((res) => {
       dispatch({
         type: MESSAGE_FUL,
-        message: 'You messaged this person successfully',
       });
     })
     .catch((error) => {
@@ -108,15 +107,16 @@ export function getChats(id) {
     .then(res => res.json())
     .then((res) => {
       var messageHistory = res.data.messages;
+      var chatId = res.data.chatId;
       dispatch({
         type: GETMESSAGE_FUL,
         profile: {
-          messageHistory
+          messageHistory,
+          chatId
         }
       });
     })
     .catch((error) => {
-      console.log(error);
       dispatch({
         type: GETMESSAGE_REJ,
         error,
