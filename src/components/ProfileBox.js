@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import TweetList from './TweetList';
 import { loadTweetsForProfile } from '../actions/tweetActions';
 import { connect } from 'react-redux';
+import { Widget } from 'react-chat-widget';
+import 'react-chat-widget/lib/styles.css';
 
 class ProfileBox extends Component {
   constructor(props) {
@@ -14,11 +16,10 @@ class ProfileBox extends Component {
 
   render() {
     let chatButton = this.props.id ?
-     (
-       <button className="btn btn-primary" onClick={this.props.chats}>
-         { 'Chat' }
-       </button>
-     ) : '';
+     (<div>
+     <Widget/>
+    </div>) : '';
+
     let button = this.props.id ?
       (
         <button className="btn btn-primary" onClick={this.props.favUnfav}>

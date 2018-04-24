@@ -13,6 +13,7 @@ let initialState = {
     followers: [],
     following: [],
     isFollowing: false,
+    messageHistory: []
   },
 };
 
