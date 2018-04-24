@@ -77,8 +77,11 @@ export function getUser(id) {
   // ENDSTUB
 }
 
-export function chat(id) {
-  return dispatch => authenticatedRequest('POST', '/api/profile/' + id + '/message', data)
+export function chat(id, data) {
+  var send = {};
+  send.message = data;
+  console.log(send);
+  return dispatch => authenticatedRequest('POST', '/api/profile/' + id + '/message', send)
     .then(res => res.json())
     .then((res) => {
       dispatch({

@@ -12,28 +12,22 @@ let chatSchema = new Schema({
 });
 
 chatSchema.statics.message = function (messagingId, messagedId, message) {
-  this.findOneOrCreate( { members: { $all: [messagingId, messagedId] } } ).then((chat) => {
-      messageObj = {author: messagingId, message: message};
-      chat.messages.push(messageObj);
-      return chat.save();
+  return this.findOne( { members: { $all: [messagingId, messagedId] } } ).then((chat) => {
+      if(!chat) {
+        var memberIds = [messagingId, messagedId];
+        var messageObj = {author: messagingId, message: message};
+        var newMessage = new this({members: memberIds, messages: messageObj});
+        return newMessage.save();
+      } else {
+        var messageObj = {author: messagingId, message: message};
+        chat.messages.push(messageObj);
+        return chat.save();
+      }
   });
 }
 
 chatSchema.statics.getMessages = function (messagingId, messagedId) {
-  return this.findOneOrCreate( { members: { $all: [messagingId, messagedId] } } );
+  return this.findOne( { members: { $all: [messagingId, messagedId] } } );
 }
-
-// source: https://stackoverflow.com/questions/40102372/find-one-or-create-with-mongoose
-chatSchema.statics.findOneOrCreate = function findOneOrCreate(condition, doc, callback) {
-  const self = this;
-  self.findOne(condition, (err, result) => {
-    return result
-      ? callback(err, result)
-      : self.create(doc, (err, result) => {
-        return callback(err, result);
-      });
-  });
-};
-
 
 module.exports = mongoose.model('Chat', chatSchema);

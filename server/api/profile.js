@@ -102,17 +102,5 @@ module.exports = function (app) {
   // ENDSTUB
   });
 
-  router.post('/profile/:id/messages', function (req, res) {
-    Chat.message(req.user.id, req.params.id)
-      .then((okay) => {
-        console.log(okay);
-        res.json({ res: 'success', data: okay });
-      })
-      .catch((err) => {
-        res.json({ res: 'failure', data: err });
-      });
-  // ENDSTUB
-  });
-
   return router;
 };

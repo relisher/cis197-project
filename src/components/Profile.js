@@ -3,7 +3,7 @@ import TweetList from './TweetList';
 import ProfileBox from './ProfileBox';
 import CreateTweetBox from './CreateTweetBox';
 import { loadTweetsForProfile } from '../actions/tweetActions';
-import { getUser, favUnfav } from '../actions/profileActions';
+import { getUser, favUnfav, chat } from '../actions/profileActions';
 import { connect } from 'react-redux';
 
 class Profile extends Component {
@@ -50,6 +50,7 @@ class Profile extends Component {
               id={match.params.id}
               user={() => this.props.user(match.params.id)}
               favUnfav={() => this.props.favUnfav(match.params.id)}
+              chat={(message) => this.props.chat(match.params.id, message)}
             />
           </div>
           <div className="col-md-8">
@@ -72,6 +73,7 @@ const mapDispatchToProps = dispatch =>
     user: id => dispatch(getUser(id)),
     favUnfav: id => dispatch(favUnfav(id)),
     loadTweets: id => dispatch(loadTweetsForProfile(id)),
+    chat: (id, message) => dispatch(chat(id, message))
   });
   // ENDSTUB
 
